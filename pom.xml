@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Copyright 2024 Edinson E. Padrón Urdaneta
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- Maven Project Coordinates -->
+  <groupId>io.github.epadronu</groupId>
+  <artifactId>dwalin-restassured-template</artifactId>
+  <version>0.1.0</version>
+  
+  <!-- Maven Project Information -->
+  <name>Dwalin REST Assured Maven Template Project</name>
+  <description>
+    This template integrates powerful tools like REST Assured for API testing and the Allure
+    Framework for advanced reporting, all seamlessly tied together with the Dwalin library.
+  </description>
+  <inceptionYear>2024</inceptionYear>
+  <url>https://github.com/epadronu/dwalin-restassured-template</url>
+
+  <!-- Project Properties -->
+  <properties>
+    <!-- Settings -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.release>22</maven.compiler.release>
+
+    <!-- Plugin' versions -->
+    <allure.maven.version>2.13.0</allure.maven.version>
+    <jreleaser.maven.plugin.version>1.13.1</jreleaser.maven.plugin.version>
+    <maven.archetype.plugin.version>3.2.1</maven.archetype.plugin.version>
+    <maven.clean.plugin.version>3.4.0</maven.clean.plugin.version>
+    <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
+    <maven.dependency.plugin.version>3.7.1</maven.dependency.plugin.version>
+    <maven.install.plugin.version>3.1.2</maven.install.plugin.version>
+    <maven.jar.plugin.version>3.4.2</maven.jar.plugin.version>
+    <maven.javadoc.plugin.version>3.8.0</maven.javadoc.plugin.version>
+    <maven.project.info.reports.plugin.version>3.6.2</maven.project.info.reports.plugin.version>
+    <maven.release.plugin.version>3.1.1</maven.release.plugin.version>
+    <maven.resources.plugin.version>3.3.1</maven.resources.plugin.version>
+    <maven.site.plugin.version>4.0.0-M16</maven.site.plugin.version>
+    <maven.source.plugin.version>3.3.1</maven.source.plugin.version>
+    <maven.surefire.plugin.version>3.3.1</maven.surefire.plugin.version>
+    <versions.maven.plugin.version>2.17.1</versions.maven.plugin.version>
+
+    <!-- Dependencies' versions -->
+    <allure.report.version>2.30.0</allure.report.version>
+    <allure.version>2.28.1</allure.version>
+    <assertj.version>3.26.3</assertj.version>
+    <dwalin.version>0.2.0</dwalin.version>
+    <junit.version>5.10.3</junit.version>
+    <log4j.version>2.23.1</log4j.version>
+    <restassured.version>5.5.0</restassured.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-bom</artifactId>
+        <version>${log4j.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>${junit.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-bom</artifactId>
+        <version>${allure.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <!-- Test -->
+    <dependency>
+      <groupId>io.github.epadronu</groupId>
+      <artifactId>dwalin</artifactId>
+      <version>${dwalin.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <version>${restassured.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-rest-assured</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>${assertj.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Runtime -->
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults -->
+      <plugins>
+        <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
+        <plugin>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>${maven.clean.plugin.version}</version>
+        </plugin>
+
+        <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
+        <plugin>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>${maven.dependency.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${maven.resources.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>${maven.source.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven.compiler.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven.surefire.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>${maven.jar.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>${maven.install.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>${maven.release.plugin.version}</version>
+        </plugin>
+
+        <!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
+        <plugin>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>${maven.site.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>${maven.javadoc.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-report-plugin</artifactId>
+          <version>${maven.surefire.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-project-info-reports-plugin</artifactId>
+          <version>${maven.project.info.reports.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>versions-maven-plugin</artifactId>
+          <version>${versions.maven.plugin.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>build</directory>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <!-- Tweak the JDK when compiling the main source -->
+          <compilerArgs>--enable-preview</compilerArgs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <!-- JUnit5 configuration -->
+          <statelessTestsetReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5Xml30StatelessReporter">
+            <usePhrasedFileName>true</usePhrasedFileName>
+            <usePhrasedTestSuiteClassName>true</usePhrasedTestSuiteClassName>
+            <usePhrasedTestCaseClassName>true</usePhrasedTestCaseClassName>
+            <usePhrasedTestCaseMethodName>true</usePhrasedTestCaseMethodName>
+          </statelessTestsetReporter>
+
+          <consoleOutputReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5ConsoleOutputReporter">
+            <usePhrasedFileName>true</usePhrasedFileName>
+          </consoleOutputReporter>
+
+          <statelessTestsetInfoReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoReporter">
+            <usePhrasedFileName>true</usePhrasedFileName>
+            <usePhrasedClassNameInRunning>true</usePhrasedClassNameInRunning>
+            <usePhrasedClassNameInTestCaseSummary>true</usePhrasedClassNameInTestCaseSummary>
+          </statelessTestsetInfoReporter>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-maven</artifactId>
+        <version>${allure.maven.version}</version>
+        <configuration>
+          <reportVersion>${allure.report.version}</reportVersion>
+          <allureDownloadUrl>
+            https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/%s/allure-commandline-%s.zip
+          </allureDownloadUrl>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>versions-maven-plugin</artifactId>
+        <groupId>org.codehaus.mojo</groupId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>dependency-updates-report</report>
+              <report>plugin-updates-report</report>
+              <report>property-updates-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
+</project>
